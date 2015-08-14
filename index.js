@@ -24,6 +24,10 @@ var WARNING_LINE = 100,
         qxt: {
             uid: 'xxxx',
             pwd: 'xxxx'
+        },
+        ym: {
+            cdkey: '',
+            password: ''
         }
 
     },
@@ -122,6 +126,36 @@ checkers.qxt = function(opt) {
 
 };
 
+checkers.ym = function(opt) {
+
+    var url = '?cdkey=' + opt.cdkey + '&password=' + opt.password;
+
+    return request
+        .get('http://sdk999ws.eucp.b2m.cn:8080/sdkproxy/querybalance.action')
+        .query(opt)
+        .then(function(res) {
+
+            return xml2jsParseString(res.text);
+
+        })
+        .then(function(resObj) {
+
+            debug('ym', resObj);
+
+            if (resObj.hasOwnProperty('message') &&
+                resObj.message > 1000)  {
+
+                BPromise.resolve(true);
+
+            }
+            else {
+
+                throw 'YM API error';
+            }
+
+        });
+
+}
 
 // jobs
 for (var k in conf) {
