@@ -143,7 +143,7 @@ checkers.ym = function(opt) {
             debug('ym', resObj);
 
             if (resObj.hasOwnProperty('message') &&
-                resObj.message > 1000)  {
+                ~~resObj.message > 1000)  {
 
                 BPromise.resolve(true);
 
